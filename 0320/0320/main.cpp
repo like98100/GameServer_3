@@ -1,65 +1,40 @@
 
 #include <stdlib.h>
 #include <WinSock2.h>
-//#include <Windows.h>
+#include <Windows.h>
 #include <stdio.h>
 #include <time.h>
 
-//#pragma comment(lib, "ws2_32")
-
-//IN_ADDR GetDefaultMyIP()
-//{
-//	char localhostname[MAX_PATH];
-//	IN_ADDR addr = { 0, };
-//
-//	if (gethostname(localhostname, MAX_PATH) == SOCKET_ERROR)//호스트 이름 얻어오기
-//	{
-//		return addr;
-//	}
-//	HOSTENT *ptr = gethostbyname(localhostname);//호스트 엔트리 얻어오기
-//	while (ptr && ptr->h_name)
-//	{
-//		if (ptr->h_addrtype == PF_INET)//IPv4 주소 타입일 때
-//		{
-//			memcpy(&addr, ptr->h_addr_list[0], ptr->h_length);//메모리 복사
-//			break;//반복문 탈출
-//		}
-//		ptr++;
-//	}
-//	return addr;
-//}
-
-// 도메인 이름 -> IP 주소
-BOOL GetIPAddr(char *name, IN_ADDR *addr)
-{
-	HOSTENT *ptr = gethostbyname(name);
-
-	memcpy(addr, ptr->h_addr, ptr->h_length);
-	return TRUE;
-}
+#pragma comment(lib, "ws2_32")
 
 
-int main(void)
+int main(int argc, char* argv[])
 {
 	//1
 	printf("HOSTNAME = %s\n", getenv("COMPUTERNAME"));
 	printf("DOMAINNAME = %s\n\n", getenv("USERDOMAIN"));
 	
 	//2
-	//WSADATA wsadata;
-	//WSAStartup(MAKEWORD(2, 2), &wsadata);
-	//IN_ADDR str;
+	WSADATA wsadata;
+	int nRet = WSAStartup(MAKEWORD(2, 2), &wsadata);
 	struct hostent *myent;
-	IN_ADDR *str;
-	char localname[MAX_PATH];
+	myent = gethostbyname(argv[1]);
 
-	myent = gethostbyname(getenv("COMPUTERNAME"));
-	GetIPAddr(localname, str);
+	int i = 0;
+	while (myent->h_addr_list[i] != NULL)
+	{
+		in_addr addr;
+		char *temp;
 
-	//str = GetDefaultMyIP();
-	printf("IP Address(16) = \n");
-	//printf("IP Address(10) = %s\n", inet_ntoa(str));
-	printf("HOSTNAME = \n\n");
+		addr.s_addr = *((u_long *)(myent->h_addr_list[i]));
+		temp = inet_ntoa(addr);
+		printf("IP Address(16) : %x\n", inet_addr(temp));
+		printf("IP Address(10) : %s\n", temp);
+		i++;
+	}
+
+	printf("HOSTNAME = %s\n\n", myent->h_name);
+	WSACleanup();
 	
 	//3
 	time_t now = time(NULL); //시스템 시각을 얻어옴
@@ -77,5 +52,7 @@ int main(void)
 												lt->tm_hour, 
 												lt->tm_min,
 												lt->tm_sec);
+
+	system("pause");
 	return 0;
 }
