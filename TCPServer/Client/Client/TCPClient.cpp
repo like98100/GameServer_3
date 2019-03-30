@@ -58,6 +58,8 @@ int recvn(SOCKET s, char *buf, int len, int flags)
 int main(int argc, char *argv[])
 {
     int retval;
+	struct hostent* myent;
+	
 
     // 윈속 초기화
     WSADATA wsa;
@@ -83,6 +85,18 @@ int main(int argc, char *argv[])
 
     // 서버와 데이터 통신
     while (1) {
+		myent = gethostbyname(argv[1]);
+		int i = 0;
+		in_addr addr;
+		char *temp;
+		while (myent->h_addr_list[i] != NULL)
+		{
+			addr.s_addr = *((u_long *)(myent->h_addr_list[i]));
+			temp = inet_ntoa(addr);
+			//printf("IP Address(16) : %x\n", inet_addr(temp));
+			//printf("IP Address(10) : %s\n", temp);
+			i++;
+		}
         // 데이터 입력
         printf("\n[보낼 데이터] ");
         if (fgets(buf, BUFSIZE + 1, stdin) == NULL)
@@ -90,8 +104,11 @@ int main(int argc, char *argv[])
 
         // '\n' 문자 제거
         len = strlen(buf);
-        if (buf[len - 1] == '\n')
-            buf[len - 1] = '\0';
+		if (buf[len - 1] == '\n')
+		{
+			buf[len - 1] = ':';
+			strcat(buf, temp);
+		}
         if (strlen(buf) == 0)
             break;
 
