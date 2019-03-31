@@ -1,1 +1,4 @@
-﻿
+﻿  Server.cpp
+d:\홍익세종\3학년\1학기\gameserver\gameserver_3\hw2\server\server\server.cpp(110): warning C4101: 'buf' :참조되지 않은 지역 변수입니다.
+  Server.vcxproj -> D:\홍익세종\3학년\1학기\GameServer\GameServer_3\HW2\Server\Debug\Server.exe
+  Server.vcxproj -> D:\홍익세종\3학년\1학기\GameServer\GameServer_3\HW2\Server\Debug\Server.pdb (Full PDB)

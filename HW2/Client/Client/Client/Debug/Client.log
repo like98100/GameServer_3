@@ -1,1 +1,5 @@
-﻿
+﻿  Client.cpp
+d:\홍익세종\3학년\1학기\gameserver\gameserver_3\hw2\client\client\client\client.cpp(107): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(90): note: 'strcat' 선언을 참조하십시오.
+  Client.vcxproj -> D:\홍익세종\3학년\1학기\GameServer\GameServer_3\HW2\Client\Client\Debug\Client.exe
+  Client.vcxproj -> D:\홍익세종\3학년\1학기\GameServer\GameServer_3\HW2\Client\Client\Debug\Client.pdb (Full PDB)
